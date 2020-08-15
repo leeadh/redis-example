@@ -1,0 +1,44 @@
+import unittest
+import fakeredis
+import json
+import os
+import sys
+sys.path.append("..")
+from server import app
+import server.app
+from mock import patch, MagicMock
+
+class BasicTestCase(unittest.TestCase):
+    counter = 1
+    def setUp(self):
+        
+        self.app = app.app.test_client()
+        app.redis = fakeredis.FakeStrictRedis()
+        app.redis.set('hits',BasicTestCase.counter)
+    
+    def create_redis(self):
+        return fakeredis.FakeStrictRedis()   
+
+    def test_getdata(self):
+        response = self.app.get('/getdata', content_type='html/text')
+        data = json.loads(response.get_data(as_text=True))
+        expected = {'count': BasicTestCase.counter}
+        assert expected == data
+
+    def test_increment(self):
+        response = self.app.get('/', content_type='html/text')
+        result = self.app.get('/getdata', content_type='html/text')
+        data = json.loads(result.get_data(as_text=True))
+        expected = {'count': BasicTestCase.counter +1 }
+        assert expected == data
+
+    def test_index(self):
+        response = self.app.get('/', content_type='html/text')
+        self.assertEqual(response.status_code, 200)
+
+    def test_getdata_index(self):
+        response = self.app.get('/getdata', content_type='html/text')
+        self.assertEqual(response.status_code, 200)
+
+if __name__ == '__main__':
+    unittest.main()

@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 ENV REDIS_SERVICE=$REDIS_SERVICE
 EXPOSE 8000
 
-CMD [ "python", "app.py"]
+CMD [ "python", "server/app.py"]
