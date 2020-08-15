@@ -9,6 +9,7 @@ pipeline {
     
     parameters {
         string(defaultValue: "latest", description: 'IMAGE_TAG', name: 'IMAGE_TAG')
+        string(defaultValue: "https://github.com/leeadh/redis-example.git", description: 'GITHUB_URL', name: 'GITHUB_URL')
     }    
     
 
@@ -16,11 +17,14 @@ pipeline {
 
         stage('Git clone'){
             steps{
-                git branch: 'test', url: 'https://github.com/leeadh/redis-example.git'
+                git branch: 'test', url: "${params.GITHUB_URL}"
             }
             
         }
-        
+
+
+
+
         stage ('Building image'){
             steps{
                 script{
@@ -29,6 +33,18 @@ pipeline {
                 }
             }
 
+        }
+
+        stage('Test application'){
+            steps{
+                script{
+                    dockerImage.inside {
+                        sh 'python server/tests/testapp.test'
+                    }
+                }
+
+            }
+            
         }
 
 
@@ -45,9 +61,9 @@ pipeline {
 
         }
         
-        stage('List pods') {
+        stage('Deploy new pods') {
             steps{
-                sh 'kubectl get pods'
+                sh 'cat kubernetes/deployment_template.yaml | sed "s/{{IMAGE_TAG}}/'${params.GITHUB_URL}'/g" | kubectl apply -f -'
             }
         }
 
