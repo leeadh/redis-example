@@ -63,7 +63,8 @@ pipeline {
         
         stage('Deploy new pods') {
             steps{
-                sh 'cat kubernetes/deployment_template.yaml | sed "s/{{IMAGE_TAG}}/'${params.GITHUB_URL}'/g" | kubectl apply -f -'
+                sh "cat kubernetes/deployment_template.yaml | sed \"s/{{IMAGE_TAG}}/${params.IMAGE_TAG}/g\" "
+                sh 'cat kubernetes/deployment_template.yaml'
             }
         }
 
