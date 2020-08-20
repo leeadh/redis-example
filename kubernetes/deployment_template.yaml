@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: counter
+  name: counter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: counter
+  template:
+    metadata:
+      labels:
+        run: counter
+    spec:
+      containers:
+      - image: leexha/redis-demo:{{IMAGE_TAG}}
+        name: counter
+        env:
+        - name: REDIS_SERVICE
+          value: "redis-master.default.svc.cluster.local"
+        ports:
+        - containerPort: 8000
+          
+---
+  apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      run: counter
+    name: counter-service
+  spec:
+    ports:
+    - port: 8000
+      protocol: TCP
+      targetPort: 8000
+    selector:
+      run: counter
+    type: LoadBalancer
+  

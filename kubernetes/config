@@ -1,0 +1,27 @@
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01EZ3hNakUzTkRrd04xb1hEVE13TURneE1ERTNORGt3TjFvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTTZnCkhxVlVQd2RRekFGVmdLbEZNdTZqQktaSE9nZ1VkY3kvY01sL1dEUjJDdmdvRFo4SGZZdjVOWFc4MVQxKy9RYUEKOUlNeExMNVNRUmxPL0k1bkZhM2hlZG9XcFBOR09qQjliZDJiUzZWV0JCbVFpR0tlSzJFbVZJcy9yeXZiT2ZxRwp1eDdFb2RDZytYSE52dDRxTk8rNlY2d3dmY0JjUE5UZE5CZm9XUEgzWUpFWE5YYVF2SkhIN09ZNWdDTlJMYmFoCkJJbkxqMHZvc2l6ZHRmSVVXeDBMeG8rcS9jMGVmOHpuSmx6c1VFNWU4R3J2YmJZVUI1N0o1YmVjT1ZQU0h1OWMKQmlpUUVFSkFBTUljKzVQcGd3SFlxblhLMmVpdFovS3I2VU1wblVjZEo0eUlrUTJkcGFWWE1DbGVhZGl0K25hMAo0Y3NNKzh1MjZlRTZZNWwvbEI4Q0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFBQzl0MHRXdHp2S0ExQ2Vnbmc5T0ZFaXRndjkKaDBlZTA5TUpUNWkyNFJoUThhWGgvWHhRTURFc0h0S3RHYUxJZzhYZDUzOVZpS0I2ZWM3QVl5aEFqN2JlSmIzcQpxbFE1eTB6dmtFQmNvUWZUclF5NmIxd0tpRlVYMXB5SmdZTFdoRTdDNStrMXRJUVVXSSt0SzZmT2ZtVlVKRm43CkRBZTRQMk10R1VlSXVQUndNYVdyeHBkNHc0dHdLakZEczJkNmFTdmJaSE94bHROL1EyMUQyOWJMZU1kUjlkcFUKK3pTcS91anJuRXJ4U3Y5eVphYk1SVkRMMWtKdFV6L0prTFAwZHRQODIzV2l1ZVRLOTVRUGw4NTg0S2xZaDNRagpHZGVIcGVXS09pWjB1OHdyakxza2REQUJZS0V0YzBKY2NwL0FscHdsenZ4UXZPeWt4NDJSbGRUTXArZz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+    server: https://9BBFED5E016A8DF4F260A0C5EDE2E252.yl4.ap-southeast-1.eks.amazonaws.com
+  name: arn:aws:eks:ap-southeast-1:034293296380:cluster/adrian-eks
+
+- context:
+    cluster: arn:aws:eks:ap-southeast-1:034293296380:cluster/adrian-eks
+    user: arn:aws:eks:ap-southeast-1:034293296380:cluster/adrian-eks
+  name: arn:aws:eks:ap-southeast-1:034293296380:cluster/adrian-eks
+
+- name: arn:aws:eks:ap-southeast-1:034293296380:cluster/adrian-eks
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1alpha1
+      args:
+      - --region
+      - ap-southeast-1
+      - eks
+      - get-token
+      - --cluster-name
+      - adrian-eks
+      command: aws
+      env:
+      - name: AWS_PROFILE
+        value: adrian-root-aws
