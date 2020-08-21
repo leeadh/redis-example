@@ -10,6 +10,7 @@ pipeline {
     parameters {
         string(defaultValue: "latest", description: 'IMAGE_TAG', name: 'IMAGE_TAG')
         string(defaultValue: "https://github.com/leeadh/redis-example.git", description: 'GITHUB_URL', name: 'GITHUB_URL')
+        string(defaultValue: "test", description: 'BRANCH_TAG', name: 'BRANCH_TAG')
     }    
     
 
@@ -17,7 +18,7 @@ pipeline {
 
         stage('Git clone'){
             steps{
-                git branch: 'test', url: "${params.GITHUB_URL}"
+                git branch: "${params.BRANCH_TAG}" , url: "${params.GITHUB_URL}"
             }
             
         }
@@ -64,12 +65,6 @@ pipeline {
         stage('Deploy new pods') {
             steps{
                 sh "cat kubernetes/deployment_template.yaml | sed \"s/{{IMAGE_TAG}}/${params.IMAGE_TAG}/g\" | kubectl apply -f -"
-            }
-        }
-
-        stage('Get new pods') {
-            steps{
-                sh "kubectl get pods"
             }
         }
 
